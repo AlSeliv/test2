@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Tree</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .nested { display: none; }
+        .active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Department Tree</h1>
+        <ul id="tree">
+            {% for department in departments %}
+                <li>
+                    <span class="caret">{{ department.name }}</span>
+                    {% if department.get_children %}
+                        <ul class="nested">
+                            {% for child in department.get_children %}
+                                <li>
+                                    {{ child.name }}
+                                    {% if child.get_children %}
+                                        <ul class="nested">
+                                            {% for grandchild in child.get_children %}
+                                                <li>{{ grandchild.name }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        var toggler = document.getElementsByClassName("caret");
+        for (var i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function() {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+    </script>
+</body>
+</html>
